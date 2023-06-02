@@ -15,9 +15,6 @@ import (
 //go:embed assets/index.html
 var indexFile string
 
-var images = []string{}
-var imageUpdateTime = time.Time{}
-
 func indexHandler(req events.Request) (events.Response, error) {
 	if !validAuthToken(req.Headers["X-API-Key"]) {
 		return events.Fail("unauthorized")
@@ -107,15 +104,11 @@ func getClient() (*s3.Client, error) {
 }
 
 func getImages(client *s3.Client) ([]string, error) {
-	if imageUpdateTime.Add(time.Minute * 60).After(time.Now()) {
-		return images, nil
-	}
-
 	paginator := s3.NewListObjectsV2Paginator(
 		client,
 		&s3.ListObjectsV2Input{Bucket: &c.ImageBucket},
 	)
-	images = []string{}
+	images := []string{}
 
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(context.TODO())
@@ -126,6 +119,5 @@ func getImages(client *s3.Client) ([]string, error) {
 			images = append(images, *obj.Key)
 		}
 	}
-	imageUpdateTime = time.Now()
 	return images, nil
 }
