@@ -1,9 +1,42 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Frame</title>
+<meta charset="UTF-8">
+<title>Frame</title>
+<style>
+.frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100vw;
+  transition: all 2000ms;
+}
+
+.frame.show {
+  opacity: 1;
+}
+</style>
 </head>
 <body>
+<img src="/random" class="frame show" alt="" />
+<img src="/random" class="frame show" alt="" />
 </body>
+<script>
+var frames = document.getElementsByClassName("frame");
+var front = frames[0];
+var toggle = false;
+
+function rotateImage() {
+    local frame = toggle ? frames[0] : frames[1];
+    frame.src = "/random#" + new Date().getTime();
+    if (toggle) {
+        front.classList.add("show");
+    } else {
+        front.classList.remove("show");
+    }
+    toggle = !toggle;
+}
+setInterval(rotateImage, 5000);
+</script>
 </html>
