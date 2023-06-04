@@ -28,7 +28,7 @@ var front = frames[0];
 var toggle = false;
 
 function rotateImage() {
-    local frame = toggle ? frames[0] : frames[1];
+    var frame = toggle ? frames[0] : frames[1];
     frame.src = "/random#" + new Date().getTime();
     if (toggle) {
         front.classList.add("show");
