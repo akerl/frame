@@ -7,8 +7,8 @@ import (
 )
 
 type config struct {
-	ImageBucket string   `json:"imagebucket"`
-	AuthTokens  []string `json:"authtokens"`
+	ImageBucket string            `json:"imagebucket"`
+	Users       map[string]string `json:"users"`
 }
 
 func loadConfig() error {

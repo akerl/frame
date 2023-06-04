@@ -4,7 +4,6 @@ import (
 	"context"
 	_ "embed"
 	"math/rand"
-	"net/http"
 	"time"
 
 	"github.com/akerl/go-lambda/apigw/events"
@@ -16,20 +15,6 @@ import (
 var indexFile string
 
 func indexHandler(req events.Request) (events.Response, error) {
-	if !validAuthToken(req.Headers["X-API-Key"]) {
-		return events.Fail("unauthorized")
-	}
-
-	cookie := &http.Cookie{
-		Name:     "X-API-Key",
-		Value:    req.Headers["X-API-Key"],
-		Path:     "/",
-		Secure:   true,
-		HttpOnly: true,
-		MaxAge:   31536000,
-		Domain:   req.Headers["Host"],
-	}
-
 	return events.Response{
 		StatusCode: 200,
 		Body:       indexFile,
@@ -40,28 +25,7 @@ func indexHandler(req events.Request) (events.Response, error) {
 	}, nil
 }
 
-func validAuthCookie(req events.Request) (events.Response, error) {
-	header := http.Header{}
-	header.Add("Cookie", req.Headers["Cookie"])
-	request := http.Request{Header: header}
-	cookie, err := request.Cookie("X-API-Key")
-	if err == http.ErrNoCookie {
-		return events.Fail("no cookie found")
-	} else if err != nil {
-		return events.Fail("parsing cookie failed")
-	}
-
-	if !validAuthToken(cookie.Value) {
-		return events.Fail("unauthorized")
-	}
-	return events.Succeed("")
-}
-
 func randomHandler(req events.Request) (events.Response, error) {
-	if resp, err := validAuthCookie(req); resp.StatusCode != 0 || err != nil {
-		return resp, err
-	}
-
 	client, err := getClient()
 	if err != nil {
 		return events.Fail("failed to load s3 client")
@@ -83,15 +47,6 @@ func randomHandler(req events.Request) (events.Response, error) {
 		return events.Fail("Failed to load signed url")
 	}
 	return events.Redirect(objReq.URL, 303)
-}
-
-func validAuthToken(token string) bool {
-	for _, i := range c.AuthTokens {
-		if i == token {
-			return true
-		}
-	}
-	return false
 }
 
 func getClient() (*s3.Client, error) {

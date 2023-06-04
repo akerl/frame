@@ -22,8 +22,8 @@ func main() {
 	}
 
 	d := mux.NewDispatcher(
-		mux.NewRoute(randomRegex, randomHandler),
-		mux.NewRoute(indexRegex, indexHandler),
+		mux.NewRouteWithBasicAuth(randomRegex, randomHandler, c.Users),
+		mux.NewRouteWithBasicAuth(indexRegex, indexHandler, c.Users),
 	)
 	mux.Start(d)
 }
