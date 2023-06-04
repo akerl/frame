@@ -11,8 +11,9 @@ import (
 var (
 	c *config
 
-	randomRegex = regexp.MustCompile(`^/random$`)
-	indexRegex  = regexp.MustCompile(`^/$`)
+	randomRegex  = regexp.MustCompile(`^/random$`)
+	faviconRegex = regexp.MustCompile(`^/favicon.ico$`)
+	indexRegex   = regexp.MustCompile(`^/$`)
 )
 
 func main() {

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	_ "embed"
+	"encoding/base64"
 	"math/rand"
 	"time"
 
@@ -14,11 +15,23 @@ import (
 //go:embed assets/index.html
 var indexFile string
 
+//go:embed assets/favicon.ico
+var faviconFile []byte
+
 func indexHandler(_ events.Request) (events.Response, error) {
 	return events.Response{
 		StatusCode: 200,
 		Body:       indexFile,
 		Headers:    map[string]string{"Content-Type": "text/html; charset=utf-8"},
+	}, nil
+}
+
+func faviconHandler(_ events.Request) (events.Response, error) {
+	return events.Response{
+		StatusCode:      200,
+		Body:            base64.StdEncoding.EncodeToString(faviconFile),
+		Headers:         map[string]string{"Content-Type": "image/x-icon"},
+		IsBase64Encoded: true,
 	}, nil
 }
 
