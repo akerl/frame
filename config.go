@@ -7,8 +7,7 @@ import (
 )
 
 type config struct {
-	ImageBucket string            `json:"imagebucket"`
-	Users       map[string]string `json:"users"`
+	ImageBucket string `json:"imagebucket"`
 }
 
 func loadConfig() error {
