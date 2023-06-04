@@ -18,10 +18,7 @@ func indexHandler(req events.Request) (events.Response, error) {
 	return events.Response{
 		StatusCode: 200,
 		Body:       indexFile,
-		Headers: map[string]string{
-			"Content-Type": "text/html; charset=utf-8",
-			"Set-Cookie":   cookie.String(),
-		},
+		Headers:    map[string]string{"Content-Type": "text/html; charset=utf-8"},
 	}, nil
 }
 
