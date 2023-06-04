@@ -14,7 +14,7 @@ import (
 //go:embed assets/index.html
 var indexFile string
 
-func indexHandler(req events.Request) (events.Response, error) {
+func indexHandler(_ events.Request) (events.Response, error) {
 	return events.Response{
 		StatusCode: 200,
 		Body:       indexFile,
@@ -22,7 +22,7 @@ func indexHandler(req events.Request) (events.Response, error) {
 	}, nil
 }
 
-func randomHandler(req events.Request) (events.Response, error) {
+func randomHandler(_ events.Request) (events.Response, error) {
 	client, err := getClient()
 	if err != nil {
 		return events.Fail("failed to load s3 client")
