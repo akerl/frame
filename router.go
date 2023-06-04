@@ -58,7 +58,7 @@ func validAuthCookie(req events.Request) (events.Response, error) {
 }
 
 func randomHandler(req events.Request) (events.Response, error) {
-	if resp, err := validAuthCookie(req); err != nil {
+	if resp, err := validAuthCookie(req); resp.StatusCode != 0 || err != nil {
 		return resp, err
 	}
 
