@@ -10,6 +10,8 @@
   left: 0;
   opacity: 0;
   width: 100vw;
+  height: 100vh;
+  object-fit: cover;
   transition: all 2000ms;
 }
 
@@ -19,24 +21,25 @@
 </style>
 </head>
 <body>
+<div id="page">
 <img src="/random" class="frame show" alt="" />
-<img src="/random" class="frame show" alt="" />
+</div>
 </body>
 <script>
-var frames = document.getElementsByClassName("frame");
-var front = frames[0];
-var toggle = false;
+function showImage(e) {
+    e.target.classList.add("show");
+    var images = document.getElementsByClassName("frame");
+    cleanup = [...images].slice(0, -2)
+    Array.from(cleanup).forEach(el => el.remove());
+}
 
 function rotateImage() {
-    var frame = toggle ? frames[0] : frames[1];
-    frame.src = "/random?" + new Date().getTime();
-    if (toggle) {
-        front.classList.add("show");
-    } else {
-        front.classList.remove("show");
-    }
-    toggle = !toggle;
+    var img = document.createElement("img");
+    img.classList.add("frame");
+    img.addEventListener("load", showImage);
+    img.src = "/random?" + new Date().getTime();
+    document.getElementById("page").appendChild(img);
 }
-setInterval(rotateImage, 5000);
+setInterval(rotateImage, 120000);
 </script>
 </html>
