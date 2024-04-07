@@ -24,7 +24,7 @@ func main() {
 
 	d := mux.NewDispatcher(
 		mux.NewRoute(randomRegex, randomHandler),
-		mux.NewRoute(faviconRegex, faviconHanlder),
+		mux.NewRoute(faviconRegex, faviconHandler),
 		mux.NewRoute(indexRegex, indexHandler),
 	)
 	mux.Start(d)
